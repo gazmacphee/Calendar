@@ -109,7 +109,7 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbwXTXB4DCax2mSCCrTlVIvzkIQsxP8YzmhVtCdst7ypJuMmeusr3CshmuB1ZgipANCO/exec?" + queryParams, {
+            fetch("https://script.google.com/macros/s/AKfycbw0zWMqHT5m3JH3D0-mRde4dRNEex-Hy14_3ZSKYoNHqyP_1RzANdytEt84aOZdwQqe/exec" + queryParams, {
                 method: "GET",  // ✅ Use GET instead of POST to avoid CORS issues
             })
             .then(response => response.text())  // Convert response to text first
