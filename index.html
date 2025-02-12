@@ -162,7 +162,7 @@
                 try {
                     const jsonResponse = JSON.parse(text);
                     if (jsonResponse.status === "Success") {
-                        alert("Availability submitted successfully!");
+                        // alert("Availability submitted successfully!");
                         closePopup();
                     } else {
                         alert("Error submitting availability: " + (jsonResponse.message || "Unknown error"));
