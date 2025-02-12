@@ -94,33 +94,40 @@
             var morning_walk = document.getElementById("morning_walk").checked ? "Yes" : "No";
             var dinner = document.getElementById("dinner").checked ? "Yes" : "No";
             var evening_walk = document.getElementById("evening_walk").checked ? "Yes" : "No";
-
+        
             if (!name) {
                 alert("Please select a name.");
                 return;
             }
-
+        
             var data = { date, name, morning_walk, dinner, evening_walk };
-
-            fetch("https://script.google.com/macros/s/AKfycbzgYYKXTJtw48YHtYzQmVEdIrx8jAqa81QAzCDideZFfIlRs34JgUgJBAHS9ukyTd9l/exec", {
+        
+            fetch("NEW_DEPLOYED_GOOGLE_SCRIPT_URL_HERE", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
-            .then(response => {
-                if (response.status === "Success") {
-                    alert("Availability submitted successfully!");
-                    closePopup();
-                } else {
-                    alert("Error submitting availability.");
+            .then(response => response.text())  // Ensure response is received correctly
+            .then(text => {
+                try {
+                    const jsonResponse = JSON.parse(text);
+                    if (jsonResponse.status === "Success") {
+                        alert("Availability submitted successfully!");
+                        closePopup();
+                    } else {
+                        alert("Error submitting availability: " + (jsonResponse.message || "Unknown error"));
+                    }
+                } catch (error) {
+                    console.error("JSON Parse Error:", error, "Response text:", text);
+                    alert("Error parsing response from server. Check console.");
                 }
             })
             .catch(error => {
-                console.error("Error:", error);
+                console.error("Network Error:", error);
                 alert("Failed to submit. Check console for details.");
             });
         }
+
     </script>
 
 </body>
