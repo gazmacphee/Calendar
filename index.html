@@ -14,7 +14,6 @@
         #calendar {
             max-width: 900px;
             margin: auto;
-            margin-top: 20px;
         }
         .popup {
             display: none;
@@ -24,30 +23,7 @@
             transform: translate(-50%, -50%);
             background: white;
             padding: 20px;
-            border: 2px solid black;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
-            z-index: 1000;
-            width: 300px;
-            text-align: left;
-        }
-        .popup label, .popup select, .popup input {
-            display: block;
-            margin: 10px 0;
-        }
-        .popup button {
-            margin-top: 10px;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-        .popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -56,8 +32,6 @@
     <h2>Weekly Availability Calendar</h2>
     <div id="calendar"></div>
 
-    <div id="popup-overlay" class="popup-overlay"></div>
-    
     <div id="popup" class="popup">
         <h3 id="popup-date"></h3>
         <label for="name">Your Name:</label>
@@ -68,9 +42,9 @@
             <option value="Susan">Susan</option>
         </select>
 
-        <label><input type="checkbox" id="morning_walk"> Morning Walk</label>
-        <label><input type="checkbox" id="dinner"> Dinner</label>
-        <label><input type="checkbox" id="evening_walk"> Evening Walk</label>
+        <label><input type="checkbox" id="morning_walk"> Morning Walk</label><br>
+        <label><input type="checkbox" id="dinner"> Dinner</label><br>
+        <label><input type="checkbox" id="evening_walk"> Evening Walk</label><br>
         
         <button onclick="submitAvailability()">Submit</button>
         <button onclick="closePopup()">Cancel</button>
@@ -78,35 +52,26 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Initializing FullCalendar...");
             var calendarEl = document.getElementById('calendar');
-            if (!calendarEl) {
-                console.error("Calendar element not found!");
-                return;
-            }
-
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 selectable: true,
                 dateClick: function(info) {
                     openPopup(info.dateStr);
-                },
-                events: [] // Events will be loaded dynamically
+                }
             });
             calendar.render();
-            loadAvailability(calendar);
+            loadAvailability();
         });
 
         function openPopup(date) {
             document.getElementById("popup").style.display = "block";
-            document.getElementById("popup-overlay").style.display = "block";
             document.getElementById("popup-date").textContent = "Select availability for " + date;
             document.getElementById("popup").setAttribute("data-date", date);
         }
 
         function closePopup() {
             document.getElementById("popup").style.display = "none";
-            document.getElementById("popup-overlay").style.display = "none";
         }
 
         function submitAvailability() {
@@ -123,36 +88,46 @@
 
             var data = { date, name, morning_walk, dinner, evening_walk };
 
-            fetch("https://script.google.com/macros/s/AKfycbyvpGcwC95DjDlOHvQ8Mmopz7d2LPwDzhOZI0HKCUuoUsGivSIdfd7bRYwtaMySC1Tb/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbyer7xfmIdcuuVRtiV7yqc-Gzy2a3rrJsVselqt8F2p0LigZU-41q8omvSIAiSZzGxJ/exec", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(response => {
-                alert("Availability submitted!");
-                closePopup();
-                loadAvailability(calendar);
+                if (response.status === "Success") {
+                    alert("Availability submitted successfully!");
+                    closePopup();
+                    loadAvailability();
+                } else {
+                    alert("Error submitting availability.");
+                }
             })
-            .catch(error => console.error("Error:", error));
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to submit. Check console for details.");
+            });
         }
 
-        function loadAvailability(calendar) {
-            fetch("https://script.google.com/macros/s/AKfycbyBQIWTZeM2g_GRhGvax69B4NM7k4l8dCpBSvd53b0GycFngyuwSzuFoxzUxUXkcHMwgw/exec")
+        function loadAvailability() {
+            fetch("https://script.google.com/macros/s/AKfycbyer7xfmIdcuuVRtiV7yqc-Gzy2a3rrJsVselqt8F2p0LigZU-41q8omvSIAiSZzGxJ/exec?callback=getAvailability")
             .then(response => response.json())
             .then(data => {
-                console.log("Fetched data:", data);
-                let events = [];
-                Object.keys(data).forEach(date => {
-                    events.push({
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    selectable: true,
+                    dateClick: function(info) {
+                        openPopup(info.dateStr);
+                    },
+                    events: Object.keys(data).map(date => ({
                         title: "Morning: " + data[date].morning_walk.join(", ") +
                             "\nDinner: " + data[date].dinner.join(", ") +
                             "\nEvening: " + data[date].evening_walk.join(", "),
                         start: date
-                    });
+                    }))
                 });
-                calendar.removeAllEvents();
-                calendar.addEventSource(events);
+                calendar.render();
             })
             .catch(error => console.error("Error fetching availability:", error));
         }
