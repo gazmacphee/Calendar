@@ -27,10 +27,10 @@
             z-index: 1000;
             box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
             width: 400px;
-            height: 400px;
+            height: 350px; /* Adjusted height */
             text-align: center;
+            overflow-y: auto;
         }
-        
         .popup-overlay {
             position: fixed;
             top: 0;
@@ -41,29 +41,44 @@
             display: none;
             z-index: 999;
         }
-
+        .popup-row {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
-
     <h2>Weekly Availability Calendar</h2>
     <div id="calendar"></div>
 
     <div id="popup-overlay" class="popup-overlay"></div>
     <div id="popup" class="popup">
         <h3 id="popup-date"></h3>
-        <label for="name">Your Name:</label>
-        <select id="name">
-            <option value="">Select Name</option>
-            <option value="Paul">Paul</option>
-            <option value="Tracey">Tracey</option>
-            <option value="Susan">Susan</option>
-        </select>
 
-        <label><input type="checkbox" id="morning_walk"> Morning Walk</label><br>
-        <label><input type="checkbox" id="dinner"> Dinner</label><br>
-        <label><input type="checkbox" id="evening_walk"> Evening Walk</label><br>
-        
+        <div class="popup-row">
+            <label for="name">Your Name:</label>
+            <select id="name">
+                <option value="">Select Name</option>
+                <option value="Paul">Paul</option>
+                <option value="Tracey">Tracey</option>
+                <option value="Susan">Susan</option>
+            </select>
+        </div>
+
+        <div class="popup-row">
+            <label><input type="checkbox" id="morning_walk"> Morning Walk</label>
+        </div>
+
+        <div class="popup-row">
+            <label><input type="checkbox" id="dinner"> Dinner</label>
+        </div>
+
+        <div class="popup-row">
+            <label><input type="checkbox" id="evening_walk"> Evening Walk</label>
+        </div>
+
         <button onclick="submitAvailability()">Submit</button>
         <button onclick="closePopup()">Cancel</button>
     </div>
@@ -143,12 +158,6 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
-
-
-
-
-
-
     </script>
 
 </body>
