@@ -109,7 +109,7 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbzYaBII72D25MhtTM8U4i1jJW_h8WoLFSFLl9j8Vw8Z7G5VOAwKZjGUyuAR_61W048f/exec" + queryParams, {
+            fetch("https://script.google.com/macros/s/AKfycbxaqNi4yLFpPrMGuTNer6SDzBC8eK-OPPVqDkMWi49RXsUr4uMpnbx9m2XOUA8igdBr/exec?" + queryParams, { 
                 method: "GET",
             })
             .then(response => response.text())
@@ -132,9 +132,6 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
-
-
-
     </script>
 
 </body>
