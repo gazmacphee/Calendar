@@ -87,6 +87,8 @@
             document.getElementById("popup-overlay").style.display = "none";
             document.getElementById("popup").style.display = "none";
         }
+
+
         function submitAvailability() {
             var date = document.getElementById("popup").getAttribute("data-date");
             var name = document.getElementById("name").value;
@@ -99,7 +101,6 @@
                 return;
             }
         
-            // ✅ Fix: Ensure query string starts with `?`
             var queryParams = new URLSearchParams({
                 date: date,
                 name: name,
@@ -108,10 +109,10 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbz6cBqjqAVHSfPVUvEPsIE39uM4qTt9NOFc9kIzjVsBkGKDqi2ioCNgCaIeBnEZrN8k/exec" + queryParams, { 
+            fetch("https://script.google.com/macros/s/AKfycbwxjl0Miozqme-w329fCwFjlOI5-mFWt091Ovnxw7S1ki48J96ghcfVO4v9XrMCYcOb/exec" + queryParams, { 
                 method: "GET",
-                mode: "cors",
-                credentials: "omit"
+                mode: "cors", 
+                headers: { "Content-Type": "application/json" }
             })
             .then(response => response.text())
             .then(text => {
@@ -133,6 +134,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
 
     </script>
 
