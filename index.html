@@ -109,10 +109,9 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbwxjl0Miozqme-w329fCwFjlOI5-mFWt091Ovnxw7S1ki48J96ghcfVO4v9XrMCYcOb/exec" + queryParams, { 
+            fetch("https://script.google.com/macros/s/AKfycbwaRA4xqlznTkxI52tIXolRXsKfmh5fJ7Pksia8TCbFJLBPUfmHdK3zOqF8VHzACT40/exec" + queryParams, { 
                 method: "GET",
-                mode: "cors", 
-                headers: { "Content-Type": "application/json" }
+                mode: "cors"
             })
             .then(response => response.text())
             .then(text => {
