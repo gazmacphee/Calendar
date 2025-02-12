@@ -51,21 +51,19 @@
 </head>
 <body>
     <h2>Weekly Availability Calendar</h2>
+    <label for="selected-name">Select Your Name:</label>
+    <select id="selected-name">
+        <option value="">Select Name</option>
+        <option value="Paul">Paul</option>
+        <option value="Tracey">Tracey</option>
+        <option value="Susan">Susan</option>
+    </select>
+    <br><br>
     <div id="calendar"></div>
 
     <div id="popup-overlay" class="popup-overlay"></div>
     <div id="popup" class="popup">
         <h3 id="popup-date"></h3>
-
-        <div class="popup-row">
-            <label for="name">Your Name:</label>
-            <select id="name">
-                <option value="">Select Name</option>
-                <option value="Paul">Paul</option>
-                <option value="Tracey">Tracey</option>
-                <option value="Susan">Susan</option>
-            </select>
-        </div>
 
         <div class="popup-row">
             <label><input type="checkbox" id="morning_walk"> Morning Walk</label>
@@ -97,6 +95,11 @@
         });
 
         function openPopup(date) {
+            let selectedName = document.getElementById("selected-name").value;
+            if (!selectedName) {
+                alert("Please select your name before selecting availability.");
+                return;
+            }
             document.getElementById("popup-overlay").style.display = "block";
             document.getElementById("popup").style.display = "block";
             document.getElementById("popup-date").textContent = "Select availability for " + date;
@@ -108,19 +111,18 @@
             document.getElementById("popup").style.display = "none";
         }
 
-
         function submitAvailability() {
             var date = document.getElementById("popup").getAttribute("data-date");
-            var name = document.getElementById("name").value;
+            var name = document.getElementById("selected-name").value;
             var morning_walk = document.getElementById("morning_walk").checked ? "Yes" : "No";
             var dinner = document.getElementById("dinner").checked ? "Yes" : "No";
             var evening_walk = document.getElementById("evening_walk").checked ? "Yes" : "No";
-        
+
             if (!date || !name) {
                 alert("Error: Missing date or name.");
                 return;
             }
-        
+
             var queryParams = new URLSearchParams({
                 date: date,
                 name: name,
@@ -128,7 +130,7 @@
                 dinner: dinner,
                 evening_walk: evening_walk
             }).toString();
-        
+
             fetch("https://script.google.com/macros/s/AKfycbzNQM74I3riTnxkYEPflWum9KYWvZMqWCyKzKAIk6m_hwxDleaw2MPLRzWCyrTGSIng/exec?" + queryParams, { 
                 method: "GET",
                 mode: "cors"
@@ -138,13 +140,7 @@
                 try {
                     const jsonResponse = JSON.parse(text);
                     if (jsonResponse.status === "Success") {
-                        alert("Availability submitted successfully!");
                         closePopup();
-                        // ✅ Clear previous selections AFTER submission
-                        document.getElementById("name").value = "";
-                        document.getElementById("morning_walk").checked = false;
-                        document.getElementById("dinner").checked = false;
-                        document.getElementById("evening_walk").checked = false;
                     } else {
                         alert("Error submitting availability: " + (jsonResponse.message || "Unknown error"));
                     }
@@ -159,6 +155,5 @@
             });
         }
     </script>
-
 </body>
 </html>
