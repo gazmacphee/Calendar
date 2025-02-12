@@ -74,7 +74,6 @@
                 }
             });
             calendar.render();
-            loadAvailability();
         });
 
         function openPopup(date) {
@@ -113,7 +112,6 @@
                 if (response.status === "Success") {
                     alert("Availability submitted successfully!");
                     closePopup();
-                    loadAvailability();
                 } else {
                     alert("Error submitting availability.");
                 }
