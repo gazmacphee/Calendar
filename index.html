@@ -102,12 +102,13 @@
         
             var data = { date, name, morning_walk, dinner, evening_walk };
         
-            fetch("https://script.google.com/macros/s/AKfycbyHk4advMqPf4sSRBMPmLSM_FmWjs7X5-G_ovpKG4Ox2_peSsQCsTnLtmqRWEv-zfxh/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbznw0fuVL21icvQ5MVaY1dXiWaAvLN20QHBsLAVYKdWDtTcVDQWqRZtoLRDZTYHnrSe/exec", {
                 method: "POST",
+                mode: "cors",  // ✅ Enable CORS handling
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             })
-            .then(response => response.text())  // Ensure response is received correctly
+            .then(response => response.text())  // ✅ Convert response to text first
             .then(text => {
                 try {
                     const jsonResponse = JSON.parse(text);
@@ -127,6 +128,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
 
     </script>
 
