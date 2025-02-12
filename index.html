@@ -95,8 +95,8 @@
             var dinner = document.getElementById("dinner").checked ? "Yes" : "No";
             var evening_walk = document.getElementById("evening_walk").checked ? "Yes" : "No";
         
-            if (!name) {
-                alert("Please select a name.");
+            if (!date || !name) {
+                alert("Error: Missing date or name.");
                 return;
             }
         
@@ -109,10 +109,10 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbw0zWMqHT5m3JH3D0-mRde4dRNEex-Hy14_3ZSKYoNHqyP_1RzANdytEt84aOZdwQqe/exec" + queryParams, {
-                method: "GET",  // ✅ Use GET instead of POST to avoid CORS issues
+            fetch("https://script.google.com/macros/s/AKfycbzYaBII72D25MhtTM8U4i1jJW_h8WoLFSFLl9j8Vw8Z7G5VOAwKZjGUyuAR_61W048f/exec" + queryParams, {
+                method: "GET",
             })
-            .then(response => response.text())  // Convert response to text first
+            .then(response => response.text())
             .then(text => {
                 try {
                     const jsonResponse = JSON.parse(text);
@@ -132,6 +132,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
 
 
     </script>
