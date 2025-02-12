@@ -87,40 +87,51 @@
             document.getElementById("popup-overlay").style.display = "none";
             document.getElementById("popup").style.display = "none";
         }
-
         function submitAvailability() {
             var date = document.getElementById("popup").getAttribute("data-date");
             var name = document.getElementById("name").value;
             var morning_walk = document.getElementById("morning_walk").checked ? "Yes" : "No";
             var dinner = document.getElementById("dinner").checked ? "Yes" : "No";
             var evening_walk = document.getElementById("evening_walk").checked ? "Yes" : "No";
-
+        
             if (!name) {
                 alert("Please select a name.");
                 return;
             }
-
-            var data = { date, name, morning_walk, dinner, evening_walk };
-
-            fetch("https://script.google.com/macros/s/AKfycbwXTXB4DCax2mSCCrTlVIvzkIQsxP8YzmhVtCdst7ypJuMmeusr3CshmuB1ZgipANCO/exec", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
+        
+            // Construct query parameters for GET request
+            var queryParams = new URLSearchParams({
+                date: date,
+                name: name,
+                morning_walk: morning_walk,
+                dinner: dinner,
+                evening_walk: evening_walk
+            }).toString();
+        
+            fetch("https://script.google.com/macros/s/AKfycbxkoGokJ5JQMhdcFy6qnMWFWPxeU0Nzr-ZzrT0vzMs/dev?" + queryParams, {
+                method: "GET",  // ✅ Change from POST to GET to avoid CORS preflight issues
             })
-            .then(response => response.json())
-            .then(response => {
-                if (response.status === "Success") {
-                    alert("Availability submitted successfully!");
-                    closePopup();
-                } else {
-                    alert("Error submitting availability.");
+            .then(response => response.text())
+            .then(text => {
+                try {
+                    const jsonResponse = JSON.parse(text);
+                    if (jsonResponse.status === "Success") {
+                        alert("Availability submitted successfully!");
+                        closePopup();
+                    } else {
+                        alert("Error submitting availability: " + (jsonResponse.message || "Unknown error"));
+                    }
+                } catch (error) {
+                    console.error("JSON Parse Error:", error, "Response text:", text);
+                    alert("Error parsing response from server. Check console.");
                 }
             })
             .catch(error => {
-                console.error("Error:", error);
+                console.error("Network Error:", error);
                 alert("Failed to submit. Check console for details.");
             });
         }
+
     </script>
 
 </body>
