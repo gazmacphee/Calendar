@@ -133,18 +133,18 @@
             // fetchAvailability();
         }
 
-        function submitAvailability() {
+         function submitAvailability() {
             var date = document.getElementById("popup").getAttribute("data-date");
             var name = document.getElementById("selected-name").value;
             var morning_walk = document.getElementById("morning_walk").checked ? "Yes" : "No";
             var dinner = document.getElementById("dinner").checked ? "Yes" : "No";
             var evening_walk = document.getElementById("evening_walk").checked ? "Yes" : "No";
-
+        
             if (!date || !name) {
                 alert("Error: Missing date or name.");
                 return;
             }
-
+        
             var queryParams = new URLSearchParams({
                 date: date,
                 name: name,
@@ -152,8 +152,8 @@
                 dinner: dinner,
                 evening_walk: evening_walk
             }).toString();
-
-            fetch("https://script.google.com/macros/s/AKfycbyBQIWTZeM2g_GRhGvax69B4NM7k4l8dCpBSvd53b0GycFngyuwSzuFoxzUxUXkcHMwgw/exec?" + queryParams, { 
+        
+            fetch("https://script.google.com/macros/s/YOUR_NEW_DEPLOYED_GOOGLE_SCRIPT_URL_HERE/exec?" + queryParams, { 
                 method: "GET",
                 mode: "cors"
             })
@@ -177,6 +177,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
     </script>
 </body>
 </html>
