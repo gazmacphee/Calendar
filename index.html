@@ -88,7 +88,7 @@
 
             var data = { date, name, morning_walk, dinner, evening_walk };
 
-            fetch("https://script.google.com/macros/s/AKfycbyer7xfmIdcuuVRtiV7yqc-Gzy2a3rrJsVselqt8F2p0LigZU-41q8omvSIAiSZzGxJ/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbyTm745UWZXkk_jMdaqe_oglir-YXiLpxJqWSJqNXTTew7wauwRNLdd-63b7N_7H4Cp/exec", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
@@ -110,7 +110,7 @@
         }
 
         function loadAvailability() {
-            fetch("https://script.google.com/macros/s/AKfycbyer7xfmIdcuuVRtiV7yqc-Gzy2a3rrJsVselqt8F2p0LigZU-41q8omvSIAiSZzGxJ/exec?callback=getAvailability")
+            fetch("https://script.google.com/macros/s/AKfycbyTm745UWZXkk_jMdaqe_oglir-YXiLpxJqWSJqNXTTew7wauwRNLdd-63b7N_7H4Cp/exec")
             .then(response => response.json())
             .then(data => {
                 var calendarEl = document.getElementById('calendar');
