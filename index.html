@@ -108,10 +108,13 @@
                 dinner: dinner,
                 evening_walk: evening_walk
             }).toString();
-            fetch("https://script.google.com/macros/s/AKfycbwaRA4xqlznTkxI52tIXolRXsKfmh5fJ7Pksia8TCbFJLBPUfmHdK3zOqF8VHzACT40/exec?" + queryParams, { 
-
+        
+            fetch("https://script.google.com/macros/s/AKfycbxxSYz5qxODJdcA3KMi-FHOd_8pDGRtYJ-fNoGja_Ku2IqFocm-6FLZZX8BoEoQRl5F/exec?" + queryParams, { 
                 method: "GET",
-                mode: "cors"
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             })
             .then(response => response.text())
             .then(text => {
@@ -133,6 +136,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
 
 
 
