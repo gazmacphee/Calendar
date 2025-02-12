@@ -87,6 +87,7 @@
             document.getElementById("popup-overlay").style.display = "none";
             document.getElementById("popup").style.display = "none";
         }
+
         function submitAvailability() {
             var date = document.getElementById("popup").getAttribute("data-date");
             var name = document.getElementById("name").value;
@@ -99,7 +100,7 @@
                 return;
             }
         
-            // Construct query parameters for GET request
+            // Construct URL with query parameters
             var queryParams = new URLSearchParams({
                 date: date,
                 name: name,
@@ -108,10 +109,10 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbxkoGokJ5JQMhdcFy6qnMWFWPxeU0Nzr-ZzrT0vzMs/dev?" + queryParams, {
-                method: "GET",  // ✅ Change from POST to GET to avoid CORS preflight issues
+            fetch("https://script.google.com/macros/s/AKfycbwXTXB4DCax2mSCCrTlVIvzkIQsxP8YzmhVtCdst7ypJuMmeusr3CshmuB1ZgipANCO/exec?" + queryParams, {
+                method: "GET",  // ✅ Use GET instead of POST to avoid CORS issues
             })
-            .then(response => response.text())
+            .then(response => response.text())  // Convert response to text first
             .then(text => {
                 try {
                     const jsonResponse = JSON.parse(text);
@@ -131,6 +132,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
 
     </script>
 
