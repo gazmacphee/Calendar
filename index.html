@@ -87,7 +87,6 @@
             document.getElementById("popup-overlay").style.display = "none";
             document.getElementById("popup").style.display = "none";
         }
-
         function submitAvailability() {
             var date = document.getElementById("popup").getAttribute("data-date");
             var name = document.getElementById("name").value;
@@ -100,7 +99,7 @@
                 return;
             }
         
-            // Construct URL with query parameters
+            // ✅ Fix: Ensure query string starts with `?`
             var queryParams = new URLSearchParams({
                 date: date,
                 name: name,
@@ -109,8 +108,10 @@
                 evening_walk: evening_walk
             }).toString();
         
-            fetch("https://script.google.com/macros/s/AKfycbytYjHxpOUk-179tV50TjHWISJra-KhdT5YhifnifWupKeNGvivbKPvFZdMjUehWSRm/exec?" + queryParams, { 
+            fetch("https://script.google.com/macros/s/AKfycbz6cBqjqAVHSfPVUvEPsIE39uM4qTt9NOFc9kIzjVsBkGKDqi2ioCNgCaIeBnEZrN8k/exec" + queryParams, { 
                 method: "GET",
+                mode: "cors",
+                credentials: "omit"
             })
             .then(response => response.text())
             .then(text => {
@@ -132,6 +133,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
     </script>
 
 </body>
