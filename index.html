@@ -95,13 +95,6 @@
 
 
         function submitAvailability() {
-            // ✅ Clear previous selections in the popup before showing it again
-            document.getElementById("name").value = "";
-            document.getElementById("morning_walk").checked = false;
-            document.getElementById("dinner").checked = false;
-            document.getElementById("evening_walk").checked = false;
-        
-        
             var date = document.getElementById("popup").getAttribute("data-date");
             var name = document.getElementById("name").value;
             var morning_walk = document.getElementById("morning_walk").checked ? "Yes" : "No";
@@ -132,6 +125,11 @@
                     if (jsonResponse.status === "Success") {
                         alert("Availability submitted successfully!");
                         closePopup();
+                        // ✅ Clear previous selections AFTER submission
+                        document.getElementById("name").value = "";
+                        document.getElementById("morning_walk").checked = false;
+                        document.getElementById("dinner").checked = false;
+                        document.getElementById("evening_walk").checked = false;
                     } else {
                         alert("Error submitting availability: " + (jsonResponse.message || "Unknown error"));
                     }
@@ -145,6 +143,7 @@
                 alert("Failed to submit. Check console for details.");
             });
         }
+
 
 
 
